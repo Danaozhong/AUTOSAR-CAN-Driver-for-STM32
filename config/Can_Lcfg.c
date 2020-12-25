@@ -60,29 +60,28 @@ const Can_ControllerConfigType CanControllerConfigData[] =
 {
   {
     .CanControllerActivation =	TRUE,
-    .CanControllerBaudRate =	125,
+    .CanControllerBaudRate =	500,
     .CanControllerId =			CAN_CTRL_1,
-    .CanControllerPropSeg =		0,
-    .CanControllerSeg1 =		12,
-    .CanControllerSeg2 =		1,
+    .CanControllerPropSeg =		1,
+    .CanControllerSeg1 =		13, // see  http://www.bittiming.can-wiki.info/ on how to calculate. No need to add +1
+    .CanControllerSeg2 =		2,
     .CanBusOffProcessing =		CAN_ARC_PROCESS_TYPE_INTERRUPT,
     .CanRxProcessing =			CAN_ARC_PROCESS_TYPE_INTERRUPT,
     .CanTxProcessing =			CAN_ARC_PROCESS_TYPE_INTERRUPT,
     .CanWakeupProcessing =		CAN_ARC_PROCESS_TYPE_INTERRUPT,
 	.CanCpuClockRef =			0,
     .Can_Arc_Hoh =				&CanHardwareObjectConfig_Controller_1[0],
-    .Can_Arc_Loopback =			TRUE,
+    .Can_Arc_Loopback =			FALSE,
     .Can_Arc_Fifo =				0,
   },
 };
 
 const Can_CallbackType CanCallbackConfigData = {
-    NULL, //CanIf_CancelTxConfirmation,
-    CanIf_RxIndication,
-    CanIf_ControllerBusOff,
-    CanIf_TxConfirmation,
-    CanIf_SetWakeupEvent,
-    CanIf_ControllerModeIndication
+    .RxIndication = CanIf_RxIndication,
+    .ControllerBusOff = CanIf_ControllerBusOff,
+    .TxConfirmation = CanIf_TxConfirmation,
+    .SetWakeupEvent = CanIf_SetWakeupEvent,
+    .ControllerModeIndication = CanIf_ControllerModeIndication
 };
 
 const Can_ConfigSetType CanConfigSetData =
@@ -95,3 +94,7 @@ const Can_ConfigType CanConfigData = {
   .CanConfigSet =	&CanConfigSetData,
 };
 
+uint32 McuE_GetSystemClock()
+{
+    return 64000000; // 64 MHz
+}

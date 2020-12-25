@@ -28,9 +28,9 @@
 #define CAN_DEV_ERROR_DETECT			STD_ON
 #define CAN_VERSION_INFO_API			STD_OFF
 #define CAN_MULTIPLEXED_TRANSMISSION	STD_OFF  // Not supported
-#define CAN_WAKEUP_SUPPORT				STD_OFF  // Not supported
+#define CAN_WAKEUP_SUPPORT				STD_ON  // Not supported
 #define CAN_HW_TRANSMIT_CANCELLATION	STD_OFF  // Not supported
-
+#define C
 typedef enum
 {
 	CAN_CTRL_1 = 0,
@@ -69,11 +69,10 @@ typedef enum {
 
 
 typedef struct {
-	void (*CancelTxConfirmation)( const Can_PduType *);
-	void (*RxIndication)( uint8 ,Can_IdType ,uint8 , const uint8 * );
+	void (*RxIndication)(const Can_HwType*, const PduInfoType*);
 	void (*ControllerBusOff)(uint8);
 	void (*TxConfirmation)(PduIdType);
-	void (*SetWakeupEvent)(uint8);
+	void (*CheckWakeup)(uint8);
 	void (*ControllerModeIndication)(uint8, Can_ControllerStateType);
 
 
@@ -195,6 +194,10 @@ typedef struct {
 
 	// Set this to use the fifo
 	boolean Can_Arc_Fifo;
+
+    // the main clock of the uC, used for calculating the baud rate.
+	uint32 SystemClock;
+
 } Can_ControllerConfigType;
 
 
@@ -220,5 +223,9 @@ typedef struct {
 extern const Can_ConfigType CanConfigData;
 extern const Can_ControllerConfigType CanControllerConfigData[];
 extern const Can_ConfigSetType Can_ConfigSet;
+
+
+uint32 McuE_GetSystemClock();
+
 
 #endif /*CAN_CFG_H_*/

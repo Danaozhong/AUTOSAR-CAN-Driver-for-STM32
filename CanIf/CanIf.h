@@ -105,7 +105,8 @@ Std_ReturnType CanIf_SetPduMode(uint8 ControllerId, CanIf_PduModeType PduModeReq
 Std_ReturnType CanIf_GetPduMode(uint8 ControllerId, CanIf_PduModeType* PduModePtr);
 
 /** Internal helper function for the Rx Indication */
-void CanIf_Arc_RxIndication(Can_HwHandleType hrh, Can_IdType canId, uint8 canDlc, const uint8* canSduPtr, uint8 driverUnit);
+//void CanIf_Arc_RxIndication(Can_HwHandleType hrh, Can_IdType canId, uint8 canDlc, const uint8* canSduPtr, uint8 driverUnit);
+void CanIf_Internal_RxIndication(const Can_HwType* MailBox, const PduInfoType* PduInfoPtr);
 
 #if ( CANIF_READRXPDU_DATA_API == STD_ON )
 Std_ReturnType CanIf_ReadRxPduData(PduIdType CanRxPduId,
